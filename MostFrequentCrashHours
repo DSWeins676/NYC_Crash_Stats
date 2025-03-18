@@ -1,0 +1,1 @@
+SELECT HOUR(crash_time), COUNT(*) FROM crashes GROUP BY HOUR(crash_time);
