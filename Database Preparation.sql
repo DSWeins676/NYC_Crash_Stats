@@ -1,10 +1,10 @@
 --Create the database
 CREATE DATABASE crashrecords;
 
---Create the tables to import .csv data into
+--Create the tables to import .csv data into. Due to the format of dates and times in the raw data, I will import them as strings and convert to datetime later.
 
 CREATE TABLE crashes (
-	`CRASH DATE` varchar(255),
+    `CRASH DATE` varchar(255),
     `CRASH TIME` varchar(255),
     BOROUGH varchar(255),
     `ZIP CODE` varchar(255),
@@ -31,7 +31,7 @@ CREATE TABLE crashes (
     );
     
 CREATE TABLE persons (
-	UNIQUE_ID int,
+    UNIQUE_ID int,
     COLLISION_ID int,
     CRASH_DATE varchar(255),
     CRASH_TIME varchar(255),
@@ -51,7 +51,7 @@ CREATE TABLE persons (
     );
     
 CREATE TABLE vehicles (
-	UNIQUE_ID int,
+    UNIQUE_ID int,
     COLLISION_ID int,
     CRASH_DATE varchar(255),
     CRASH_TIME varchar(255),
@@ -145,3 +145,21 @@ RENAME COLUMN DRIVER_SEX to driver_sex,
 RENAME COLUMN PRE_CRASH to pre_crash, 
 RENAME COLUMN CONTRIBUTING_FACTOR_1 to cf1, 
 RENAME COLUMN CONTRIBUTING_FACTOR_2 to cf2;
+
+-- Convert dates/times imported as strings into DATETIME format in crashes table. Drop crash_date and crash_time from persons/vehicles since this has already been captured in the crashes table by collision_id.
+
+UPDATE crashes SET crash_date = date_format(str_to_date(crash_date, '%m/%d/%Y'), '%Y-%m-%d');
+
+ALTER TABLE crashes 
+	MODIFY COLUMN crash_date DATE, 
+	MODIFY COLUMN crash_time TIME;
+
+-- Drop crash_date and crash_time from persons/vehicles since this has already been captured in the crashes table by collision_id.
+
+ALTER TABLE persons 
+	DROP COLUMN crash_date,
+	DROP COLUMN crash_time;
+
+ALTER TABLE vehicles
+	DROP COLUMN crash_date,
+	DROP COLUMN crash_time;
