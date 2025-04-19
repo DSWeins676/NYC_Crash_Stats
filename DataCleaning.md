@@ -7,18 +7,23 @@ The dataset contains the column Ped_Role, which lists the role of the listed per
 
 This can be any of the following:
 
-SELECT DISTINCT Ped_Role FROM persons;
+```
+SELECT DISTINCT ped_Role, COUNT(*) AS count FROM persons_wk GROUP BY ped_role ORDER BY COUNT(*) DESC;
 
-Registrant	779201
-Driver	679359
-Passenger	263991
-Pedestrian	45767
-Witness	28556
-Owner	14766
+ped_role        count
+
+Registrant	    779201
+Driver	        679359
+Passenger	      263991
+Pedestrian	    45767
+Witness	        28556
+Owner	          14766
 Notified Person	4813
-Other	851
+Other	          851
 In-Line Skater	181
-NULL 3
+NULL             3
+
+```
 
 Some of these, such as "Witness" or "Notified Person," are not relevant to our analysis. I further investigated "Registrants," since they are the most frequent entry, and "Owners" to avoid duplicate records.
 
