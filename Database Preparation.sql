@@ -1,3 +1,8 @@
+--Create the database
+CREATE DATABASE crashrecords;
+
+--Create the tables to import .csv data into
+
 CREATE TABLE crashes (
 	`CRASH DATE` varchar(255),
     `CRASH TIME` varchar(255),
@@ -62,3 +67,81 @@ CREATE TABLE vehicles (
     CONTRIBUTING_FACTOR_2 text,
     PRIMARY KEY(UNIQUE_ID)
     );
+
+-- Load csv data into tables
+
+LOAD DATA LOCAL INFILE 'D:\\CrashRecords\\crashes.csv' INTO TABLE crashes
+FIELDS terminated by ','
+ENCLOSED BY '"'
+ignore 1 rows;
+
+LOAD DATA LOCAL INFILE 'D:\\CrashRecords\\Persons.csv' INTO TABLE persons
+FIELDS terminated by ','
+ENCLOSED BY '"'
+ignore 1 rows;
+
+LOAD DATA LOCAL INFILE 'D:\\CrashRecords\\Persons.csv' INTO TABLE persons
+FIELDS terminated by ','
+ENCLOSED BY '"'
+ignore 1 rows;
+
+-- Rename the table columns for better querying syntax
+
+ALTER TABLE crashes 
+RENAME COLUMN `CRASH DATE` to crash_date,
+RENAME COLUMN `CRASH TIME` to crash_time,
+RENAME COLUMN `BOROUGH` to borough,
+RENAME COLUMN `ZIP CODE` to zip_code,
+RENAME COLUMN `NUMBER OF PERSONS INJURED` to num_person_injured,
+RENAME COLUMN `NUMBER OF PERSONS KILLED` to num_person_killed,
+RENAME COLUMN `NUMBER OF PEDESTRIANS INJURED` to num_ped_injured,
+RENAME COLUMN `NUMBER OF PEDESTRIANS KILLED` to num_ped_killed,
+RENAME COLUMN `NUMBER OF CYCLIST INJURED` to num_cycle_injured,
+RENAME COLUMN `NUMBER OF CYCLIST KILLED` to num_cycle_killed,
+RENAME COLUMN `NUMBER OF MOTORIST INJURED` to num_motor_injured,
+RENAME COLUMN `NUMBER OF MOTORIST KILLED` to num_motor_killed,
+RENAME COLUMN `CONTRIBUTING FACTOR VEHICLE 1` to cf1,
+RENAME COLUMN `CONTRIBUTING FACTOR VEHICLE 2` to cf2,
+RENAME COLUMN `CONTRIBUTING FACTOR VEHICLE 3` to cf3,
+RENAME COLUMN `CONTRIBUTING FACTOR VEHICLE 4` to cf4,
+RENAME COLUMN `CONTRIBUTING FACTOR VEHICLE 5` to cf5,
+RENAME COLUMN `COLLISION_ID` to collision_id,
+RENAME COLUMN `VEHICLE TYPE CODE 1` to veh_type_code1,
+RENAME COLUMN `VEHICLE TYPE CODE 2` to veh_type_code2,
+RENAME COLUMN `VEHICLE TYPE CODE 3` to veh_type_code3,
+RENAME COLUMN `VEHICLE TYPE CODE 4` to veh_type_code4,
+RENAME COLUMN `VEHICLE TYPE CODE 5` to veh_type_code5;
+
+ALTER TABLE persons 
+RENAME COLUMN UNIQUE_ID to unique_id, 
+RENAME COLUMN COLLISION_ID to collision_id, 
+RENAME COLUMN CRASH_DATE to crash_date, 
+RENAME COLUMN CRASH_TIME to crash_time, 
+RENAME COLUMN PERSON_ID to person_id, 
+RENAME COLUMN PERSON_TYPE to person_type, 
+RENAME COLUMN PERSON_INJURY to person_injury, 
+RENAME COLUMN VEHICLE_ID to vehicle_id, 
+RENAME COLUMN PERSON_AGE to person_age, 
+RENAME COLUMN BODILY_INJURY to bodily_injury, 
+RENAME COLUMN POSITION_IN_VEHICLE to position_in_vehicle, 
+RENAME COLUMN SAFETY_EQUIPMENT to safety_equipment, 
+RENAME COLUMN PED_LOCATION to ped_location,
+RENAME COLUMN PED_ACTION to ped_action, 
+RENAME COLUMN PED_ROLE to ped_role, 
+RENAME COLUMN PERSON_SEX to person_sex;
+
+ALTER TABLE vehicles 
+RENAME COLUMN UNIQUE_ID to unique_id, 
+RENAME COLUMN COLLISION_ID to collision_id, 
+RENAME COLUMN CRASH_DATE to crash_date, 
+RENAME COLUMN CRASH_TIME to crash_time, 
+RENAME COLUMN VEHICLE_ID to vehicle_id, 
+RENAME COLUMN VEHICLE_TYPE to vehicle_type, 
+RENAME COLUMN VEHICLE_MAKE to vehicle_make, 
+RENAME COLUMN VEHICLE_MODEL to vehicle_model, 
+RENAME COLUMN VEHICLE_YEAR to vehicle_year, 
+RENAME COLUMN VEHICLE_OCCUPANTS to vehicle_occupants, 
+RENAME COLUMN DRIVER_SEX to driver_sex, 
+RENAME COLUMN PRE_CRASH to pre_crash, 
+RENAME COLUMN CONTRIBUTING_FACTOR_1 to cf1, 
+RENAME COLUMN CONTRIBUTING_FACTOR_2 to cf2;
